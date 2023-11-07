@@ -1,26 +1,102 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ExpenseForm.css";
 const ExpenseForm = () => {
-    return (
-        <form>
-            <div className="new-expense__controls">
-                <div>
-                    <label className="new-expense__control">Title</label>
-                    <input type='text' />
-                </div>
-                <div>
-                    <label className="new-expense__control">Amount</label>
-                    <input type='number' min='0.01' step='0.01'/>
-                </div>
-                <div>
-                    <label className="new-expense__control">Date</label>
-                    <input type='date' min='2019-01-01' max= '2024-12-31' />
-                </div>
-            </div>            
-            <div className="new-expense__actions">
-                <button type="submit">Add Expense</button>
-            </div>
-        </form> 
-    );
+  const [enteredTitle, setEnteredTitle] = useState("");
+  const [enteredAmount, setEnteredAmount] = useState();
+  const [enteredDate, setEnteredDate] = useState();
+  //    const [userInput, setUserInput] =  useState({
+  //         enteredTitle: '',
+  //         enteredAmount: '',
+  //         enteredDate: ''
+  //     });
+  const titleChnageHandler = (event) => {
+    setEnteredTitle(event.target.value);
+    // setUserInput({
+    //     ...userInput,
+    //     enteredTitle: event.target.value,
+    // }); //this approach may break in some place because if we schedule a lot of state at the same time, an incorrect or outdated value can come
+    // setUserInput((prevState) => {
+    //     return { ...prevState, enteredTitle: event.target.value };
+    // }); // this here react will ensure that state snapshot is latest snapshot keeping all the scheduling has been done correctly and will provide the correct data
+  };
+
+  const amountChnageHandler = (event) => {
+    setEnteredAmount(event.target.value);
+    // setUserInput({
+    //     ...userInput,
+    //     enteredAmount: event.target.value,
+    // });
+  };
+
+  const dateChnageHandler = (event) => {
+    setEnteredDate(event.target.value);
+    // setUserInput({
+    //     ...userInput,
+    //     enteredDate: event.target.value,
+    // });
+  };
+
+//   const inputChangeHandler = (identifier, value) => {
+//     if (identifier === "title") {
+//       setEnteredTitle(value);
+//     } else if (identifier === "date") {
+//       setEnteredDate(value);
+//     } else {
+//       setEnteredAmount(value);
+//     }
+//   };
+
+  const SubmitHandler = (event) => {
+    event.preventDefault();
+    const expenseData = {
+        title: enteredTitle,
+        amount: enteredAmount,
+        date: new Date(enteredDate)
+    };
+    console.log(expenseData);
+  }
+
+//   onChange={(event) =>
+//     inputChangeHandler("title", event.target.value) }// also can be written like this inside the input tag
+  return (
+    <form onSubmit={SubmitHandler}>
+      <div className="new-expense__controls">
+        <div>
+          <label className="new-expense__control">Title</label>
+          <input
+            type="text"
+            onChange={titleChnageHandler}
+            //   onChange={(event) =>
+            //     inputChangeHandler("title", event.target.value) }// also can be written like this inside the input tag
+          />
+        </div>
+        <div>
+          <label className="new-expense__control">Amount</label>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            onChange={amountChnageHandler}
+            // onChange={(event) =>
+            //   inputChangeHandler("amount", event.target.value)
+            // }
+          />
+        </div>
+        <div>
+          <label className="new-expense__control">Date</label>
+          <input
+            type="date"
+            min="2019-01-01"
+            max="2024-12-31"
+            onChange={dateChnageHandler}
+            // onChange={(event) => inputChangeHandler("date", event.target.value)}
+          />
+        </div>
+      </div>
+      <div className="new-expense__actions">
+        <button type="submit">Add Expense</button>
+      </div>
+    </form>
+  );
 };
 export default ExpenseForm;
